@@ -1,17 +1,240 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 ---
 <html lang="fr">
   <head>
-    <BaseHead title="À propos" description="Qui suis-je ?" />
+    <BaseHead
+      title="À propos"
+      description="Qui est Pierclaud ? Étudiant."
+    />
   </head>
   <body>
     <Header />
     <main>
-      
+
+      <section class="lettre">
+
+        <div class="lettre__entete">
+          <span class="lettre__lieu">France, 2026</span>
+          <h1 class="lettre__titre">À qui lira ces lignes,</h1>
+        </div>
+
+        <div class="lettre__corps">
+          <p>
+            Je m'appelle Pierclaud, j'ai 24 ans. Dans la vie je suis plutot du genre discret, 
+            limite invisible un peu comme Kuroko Tetsuya. Pas du tout à l'aise avec les projecteurs,
+            les grandes foules. Je préfère les petits groupes et les moments de calme où je peux
+            juste être moi-même sans prétention ni masque. Je suis étudiant en informatique,
+            mais je ne me limite pas à ça. Je suis aussi un passionné de musique, 
+            un amateur de sport, un cuisinier du dimanche, un touche-à-tout en quelque sorte.
+          </p>
+          <p>
+            J'ai créé ce blog pour partager mes découvertes, mes réflexions, mes passions. 
+            Ce n'est pas un blog de niche, ni un blog de conseils. C'est juste un espace où je peux
+            écrire sur ce qui me plaît, ce qui m'inspire. Car je pense que dans un monde où tout est numérique,
+            on perd l'habitude d'écrire à la main, de prendre le temps de poser ses pensées sur du papier. 
+            Donc quitte à écrire, autant le faire à l'ancienne, avec une touche de nostalgie et d'authenticité.
+            Ce blog, c'est un peu comme une lettre que j'écris à moi-même, à mon futur moi, ou à quiconque voudra bien la lire. 
+            C'est un endroit où je peux être authentique, où je peux partager mes passions sans filtre, sans pression.
+          </p>
+          <p>
+            Je ne suis expert en rien. Je ne prétends pas avoir des connaissances approfondies sur les sujets que j'aborde.
+            Je suis juste un curieux, un passionné, un amateur qui aime partager ce qui le fait vibrer. 
+            Je ne cherche pas à être parfait, ni à plaire à tout le monde. Je veux juste être moi-même, 
+            avec mes imperfections, mes doutes, mes découvertes. Je veux que ce blog soit un espace de liberté, 
+            d'expression, de partage.
+          </p>
+          <p>
+            Bienvenue chez moi.
+          </p>
+        </div>
+
+        <div class="lettre__signature">
+          <span class="lettre__signe">Pierclaud</span>
+          <span class="lettre__ps">
+            Tu peux me retrouver sur
+            <a href="https://discord.gg/book4ir" target="_blank">Discord</a>
+            si tu veux échanger.
+          </span>
+        </div>
+
+      </section>
+
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  /* ── Lettre ───────────────────────────────────────── */
+  .lettre {
+    padding-block:  2.5rem 3rem;
+    border-bottom:  1px solid var(--cream-border);
+    margin-bottom:  3rem;
+    position:       relative;
+  }
+
+  /* Ligne verticale gauche façon papier à lettres */
+  .lettre::before {
+    content:    '';
+    position:   absolute;
+    left:       2.5rem;
+    top:        0;
+    bottom:     0;
+    width:      1px;
+    background: var(--cream-border);
+    opacity:    0.5;
+  }
+
+  .lettre__entete {
+    margin-bottom: 2rem;
+    padding-left:  4rem;
+  }
+
+  .lettre__lieu {
+    display:        block;
+    font-family:    var(--font-stamp);
+    font-size:      0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color:          var(--ink-faint);
+    margin-bottom:  1rem;
+  }
+
+  .lettre__titre {
+    font-family: var(--font-serif);
+    font-size:   clamp(1.4rem, 4vw, 2rem);
+    font-weight: 400;
+    font-style:  italic;
+    color:       var(--ink);
+    line-height: 1.3;
+  }
+
+  /* ── Corps de la lettre ───────────────────────────── */
+  .lettre__corps {
+    padding-left: 4rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .lettre__corps p {
+    font-family:   var(--font-body);
+    font-size:     1rem;
+    color:         var(--ink-light);
+    line-height:   1.9;
+    margin-bottom: 1.25rem;
+  }
+  .lettre__corps p:last-child { margin-bottom: 0; }
+
+  /* ── Signature ────────────────────────────────────── */
+  .lettre__signature {
+    padding-left:  4rem;
+    display:       flex;
+    flex-direction: column;
+    gap:           1rem;
+  }
+
+  .lettre__signe {
+    font-family: var(--font-serif);
+    font-size:   1.8rem;
+    font-style:  italic;
+    font-weight: 400;
+    color:       var(--terra);
+    line-height: 1;
+  }
+
+  .lettre__ps {
+    font-family: var(--font-body);
+    font-size:   0.82rem;
+    font-style:  italic;
+    color:       var(--ink-faint);
+    line-height: 1.6;
+  }
+
+  .lettre__ps a {
+    color:           var(--terra);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .lettre__ps a:hover { color: var(--terra-soft); }
+
+  /* ── Séparateur ───────────────────────────────────── */
+  .separateur {
+    display:       flex;
+    align-items:   center;
+    gap:           1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .separateur__badge {
+    font-family:    var(--font-stamp);
+    font-size:      0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color:          var(--terra);
+    border:         1px solid var(--terra);
+    padding:        3px 10px;
+    border-radius:  2px;
+    white-space:    nowrap;
+    flex-shrink:    0;
+  }
+
+  .separateur__trait {
+    flex:       1;
+    height:     1px;
+    background: var(--cream-border);
+  }
+
+  /* ── Sujets ───────────────────────────────────────── */
+  .sujets__grille {
+    display:               grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:                   0;
+  }
+
+  .sujet {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.3rem;
+    padding:        1rem 0.75rem;
+    border-top:     1px solid var(--cream-border);
+    border-right:   1px solid var(--cream-border);
+    transition:     background 0.2s;
+  }
+
+  .sujet:nth-child(4n) { border-right: none; }
+  .sujet:nth-last-child(-n+4) { border-bottom: 1px solid var(--cream-border); }
+
+  .sujet:hover { background: var(--cream-dark); }
+
+  .sujet__num {
+    font-family:    var(--font-stamp);
+    font-size:      0.62rem;
+    color:          var(--terra);
+    letter-spacing: 0.1em;
+  }
+
+  .sujet__nom {
+    font-family: var(--font-serif);
+    font-size:   0.9rem;
+    font-weight: 600;
+    color:       var(--ink);
+  }
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width: 600px) {
+    .lettre::before { display: none; }
+    .lettre__entete,
+    .lettre__corps,
+    .lettre__signature { padding-left: 0; }
+
+    .sujets__grille {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sujet:nth-child(4n)       { border-right: 1px solid var(--cream-border); }
+    .sujet:nth-child(even)     { border-right: none; }
+    .sujet:nth-last-child(-n+4){ border-bottom: none; }
+    .sujet:nth-last-child(-n+2){ border-bottom: 1px solid var(--cream-border); }
+  }
+</style>
