@@ -1,9 +1,59 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const articles = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const sujets = [
+  {
+    nom:  'Musique',
+    desc: 'Albums, artistes, découvertes.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  },
+  {
+    nom:  'Sport',
+    desc: 'Ce que je pratique, ce que je regarde.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
+  },
+  {
+    nom:  'Cinéma',
+    desc: 'Films, séries, découvertes et coups de cœur.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h20M2 15h20"/></svg>`,
+  },
+  {
+    nom:  'Cuisine',
+    desc: 'Recettes réussies, ratées et tout ce qu\'on apprend en cuisine.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v6a3 3 0 0 0 6 0V2"/><path d="M9 8v13"/><path d="M18 2c0 4-2 6-2 6h4s-2-2-2-6z"/><path d="M18 8v13"/></svg>`,
+  },
+  {
+    nom:  'Littérature',
+    desc: 'Lectures, découvertes, avis et recommandations.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  },
+  {
+    nom:  'Informatique',
+    desc: 'Ce que j\'apprends en code, les outils que j\'utilise au quotidien.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  },
+  {
+    nom:  'Mangas',
+    desc: 'Mes découvertes, mes séries preférées.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+  },
+  {
+    nom:  'Culture générale',
+    desc: 'Histoire, société, sciences et tout ce qui nourrit la curiosité.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>`,
+  },
+];
 ---
+<!doctype html>
 <html lang="fr">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
@@ -11,8 +61,268 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
   <body>
     <Header />
     <main>
-      
+
+      <section class="hero">
+        <p class="hero__salut">Salut, moi c'est <strong>Pierclaud</strong></p>
+        <h1 class="hero__phrase">
+          Bienvenue sur Blog4ir.<br />
+          <em>Partage, découverte et apprentissage</em>
+        </h1>
+        <p class="hero__desc">
+          Ce blog c'est mon espace pour partager ce que je vis, ce que je découvre, et ce que j'apprends en chemin. Pas d'expert ici, juste quelqu'un qui est curieux de tout.
+        </p>
+        <a href="/about" class="hero__cta">En savoir plus sur moi →</a>
+      </section>
+
+      <div class="separateur">
+        <span class="separateur__badge">Sur le blog en ce moment</span>
+        <span class="separateur__trait"></span>
+      </div>
+
+      {articles.length === 0 ? (
+        <p class="vide">
+          Le premier article arrive bientôt. En attendant, installe-toi confortablement.
+        </p>
+      ) : (
+        <ul class="articles">
+          {articles.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}/`} class="post-card">
+                <div class="post-card__meta">
+                  <FormattedDate date={post.data.pubDate} />
+                </div>
+                <div class="post-card__title">{post.data.title}</div>
+                {post.data.description && (
+                  <div class="post-card__desc">{post.data.description}</div>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div class="voir-tout">
+        <a href="/blog" class="voir-tout__lien">Lire tous les articles →</a>
+      </div>
+
+      <!-- Ce que tu trouveras ici -->
+      <section class="sujets">
+        <div class="separateur">
+          <span class="separateur__badge">Ce que tu trouveras ici</span>
+          <span class="separateur__trait"></span>
+        </div>
+        <div class="sujets__grille">
+          {sujets.map((s) => (
+            <div class="sujet">
+              <div class="sujet__icone" set:html={s.icon} />
+              <div class="sujet__corps">
+                <strong class="sujet__nom">{s.nom}</strong>
+                <p class="sujet__desc">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    padding-block:  2.5rem 3rem;
+    border-bottom:  1px solid var(--cream-border);
+    margin-bottom:  2.5rem;
+  }
+
+  .hero__salut {
+    font-family:    var(--font-stamp);
+    font-size:      0.85rem;
+    color:          var(--terra);
+    letter-spacing: 0.05em;
+    margin-bottom:  0.75rem;
+  }
+
+  .hero__phrase {
+    font-family:   var(--font-serif);
+    font-size:     clamp(1.8rem, 5vw, 2.8rem);
+    font-weight:   600;
+    line-height:   1.2;
+    color:         var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero__phrase em {
+    color:      var(--terra);
+    font-style: italic;
+  }
+
+  .hero__desc {
+    font-size:     0.95rem;
+    color:         var(--ink-light);
+    line-height:   1.8;
+    max-width:     540px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__cta {
+    display:         inline-block;
+    font-family:     var(--font-stamp);
+    font-size:       0.72rem;
+    text-transform:  uppercase;
+    letter-spacing:  0.12em;
+    color:           var(--terra);
+    text-decoration: none;
+    border:          1px solid var(--terra);
+    padding:         0.4rem 1rem;
+    border-radius:   2px;
+    transition:      background 0.2s, color 0.2s;
+  }
+  .hero__cta:hover {
+    background: var(--terra);
+    color:      var(--cream);
+  }
+
+  /* ── Séparateur ───────────────────────────────────── */
+  .separateur {
+    display:       flex;
+    align-items:   center;
+    gap:           1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .separateur__badge {
+    font-family:    var(--font-stamp);
+    font-size:      0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color:          var(--terra);
+    border:         1px solid var(--terra);
+    padding:        3px 10px;
+    border-radius:  2px;
+    white-space:    nowrap;
+    flex-shrink:    0;
+  }
+
+  .separateur__trait {
+    flex:       1;
+    height:     1px;
+    background: var(--cream-border);
+  }
+
+  /* ── Articles ─────────────────────────────────────── */
+  .articles {
+    list-style:     none;
+    padding:        0;
+    margin:         0;
+    display:        flex;
+    flex-direction: column;
+    gap:            0.75rem;
+  }
+
+  .vide {
+    font-family:   var(--font-body);
+    font-size:     0.95rem;
+    color:         var(--ink-faint);
+    font-style:    italic;
+    padding:       1.5rem 0;
+    border-top:    1px solid var(--cream-border);
+    border-bottom: 1px solid var(--cream-border);
+  }
+
+  /* ── Voir tout ────────────────────────────────────── */
+  .voir-tout {
+    text-align:    right;
+    margin-top:    1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .voir-tout__lien {
+    font-family:     var(--font-stamp);
+    font-size:       0.72rem;
+    text-transform:  uppercase;
+    letter-spacing:  0.1em;
+    color:           var(--ink-faint);
+    text-decoration: none;
+    transition:      color 0.2s;
+  }
+  .voir-tout__lien:hover { color: var(--terra); }
+
+  /* ── Sujets ───────────────────────────────────────── */
+  .sujets {
+    padding-top: 0.5rem;
+  }
+
+  .sujets__grille {
+    display:               grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:                   0;
+  }
+
+  /* ── Carte sujet ──────────────────────────────────── */
+  .sujet {
+    display:     flex;
+    align-items: flex-start;
+    gap:         0.875rem;
+    padding:     1.1rem 1rem;
+    border-top:  1px solid var(--cream-border);
+    transition:  background 0.2s;
+  }
+
+  .sujet:nth-child(odd) {
+    border-right: 1px solid var(--cream-border);
+  }
+
+  .sujet:hover {
+    background: var(--cream-dark);
+  }
+
+  .sujet__icone {
+    width:       20px;
+    height:      20px;
+    flex-shrink: 0;
+    color:       var(--ink-light);
+    margin-top:  3px;
+    transition:  color 0.2s;
+  }
+  .sujet:hover .sujet__icone { color: var(--terra); }
+
+  .sujet__icone svg {
+    width:   100%;
+    height:  100%;
+    display: block;
+  }
+
+  .sujet__corps {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.25rem;
+  }
+
+  .sujet__nom {
+    font-family: var(--font-serif);
+    font-size:   0.95rem;
+    font-weight: 600;
+    color:       var(--ink);
+    line-height: 1.2;
+  }
+
+  .sujet__desc {
+    font-size:   0.8rem;
+    color:       var(--ink-light);
+    line-height: 1.5;
+    margin:      0;
+  }
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width: 600px) {
+    .sujets__grille {
+      grid-template-columns: 1fr;
+    }
+    .sujet:nth-child(odd) {
+      border-right: none;
+    }
+  }
+</style>
