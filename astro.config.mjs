@@ -3,7 +3,6 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://pierclaud7.github.io',
-  base: '/Blog4ir',
+  site: 'https://blog4ir.netlify.app',
   integrations: [mdx(), sitemap()],
 });
